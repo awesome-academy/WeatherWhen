@@ -1,4 +1,4 @@
-package com.thailam.weatherwhen.data.remote
+package com.thailam.weatherwhen.data.remote.source
 
 import com.thailam.weatherwhen.data.ForecastDataSource
 import com.thailam.weatherwhen.data.model.LocationResponse
@@ -10,6 +10,6 @@ class ForecastRemoteDataSource(val accuWeatherService: AccuWeatherService) : For
     override fun getLocationKey(geoposition: String): Single<LocationResponse> =
         accuWeatherService.getLocationKey(geoposition)
 
-    override fun get5DaysForecast(locationKey: String): Single<WeatherResponse> =
+    override fun getDailyForecastsRemote(locationKey: String): Single<WeatherResponse> =
         accuWeatherService.get5DaysWeatherForecasts(locationKey)
 }

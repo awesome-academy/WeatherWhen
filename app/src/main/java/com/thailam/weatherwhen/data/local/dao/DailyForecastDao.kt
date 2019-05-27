@@ -15,4 +15,7 @@ abstract class DailyForecastDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun addDailyForecasts(dailyForecasts: List<DailyForecast>)
+
+    @Query(value = "SELECT * FROM $TBL_FORECAST_NAME LIMIT 1")
+    abstract fun getLastUpdatedForecast(): DailyForecast
 }

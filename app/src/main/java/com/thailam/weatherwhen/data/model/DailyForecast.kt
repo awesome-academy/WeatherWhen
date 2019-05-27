@@ -10,6 +10,7 @@ import com.thailam.weatherwhen.data.model.DailyForecast.Companion.TBL_FORECAST_N
 @Entity(tableName = TBL_FORECAST_NAME)
 data class DailyForecast(
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = TBL_FORECAST_ID)
     val id: Int,
     @SerializedName(API_DATE) @ColumnInfo(name = TBL_FORECAST_DATE)
     val date: String,
@@ -34,6 +35,7 @@ data class DailyForecast(
         const val API_NIGHT = "Night"
         // Local database entries
         const val TBL_FORECAST_NAME = "daily_forecasts"
+        const val TBL_FORECAST_ID = "id"
         const val TBL_FORECAST_DATE = "date"
         const val TBL_FORECAST_EPOCH = "epoch_date"
         const val TBL_FORECAST_TEMPERATURE = "temperature"

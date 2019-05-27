@@ -8,11 +8,12 @@ import io.reactivex.Single
 interface ForecastDataSource {
     interface Local {
         fun addDailyForecasts(dailyForecasts: List<DailyForecast>)
-        fun getDailyForecasts() : Single<List<DailyForecast>>
+        fun getDailyForecastsLocal(): Single<List<DailyForecast>>
+        fun getLastUpdatedForecast(): DailyForecast
     }
 
     interface Remote {
         fun getLocationKey(geoposition: String): Single<LocationResponse>
-        fun get5DaysForecast(locationKey: String): Single<WeatherResponse>
+        fun getDailyForecastsRemote(locationKey: String): Single<WeatherResponse>
     }
 }

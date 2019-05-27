@@ -18,8 +18,8 @@ data class CurrentCondition(
         const val API_ICON = "Icon"
         const val API_PHRASE = "ShortPhrase"
         const val API_RAIN_PROP = "RainProbability"
-        const val API_RAIN = "RAIN"
-        const val API_WIND = "WIND"
+        const val API_RAIN = "Rain"
+        const val API_WIND = "Wind"
         // db prefixes
         const val TBL_CONDITION_PREFIX_RAIN = "rain_"
         const val TBL_CONDITION_PREFIX_WIND = "wind_"
