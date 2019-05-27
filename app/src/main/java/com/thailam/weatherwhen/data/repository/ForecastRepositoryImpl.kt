@@ -52,8 +52,8 @@ class ForecastRepositoryImpl(
 
     private suspend fun checkIfShouldRefresh(): Boolean = coroutineScope {
         withContext(Dispatchers.IO) {
-            val lastUpdatedDate = withContext(Dispatchers.IO) { getLastUpdatedForecast() }.date
-            lastUpdatedDate.equals(CURRENT_DATE_Y_M_D, ignoreCase = true)
+            val lastForecast: DailyForecast? = withContext(Dispatchers.IO) { getLastUpdatedForecast() }
+            lastForecast?.date.equals(CURRENT_DATE_Y_M_D, ignoreCase = true)
         }
     }
 

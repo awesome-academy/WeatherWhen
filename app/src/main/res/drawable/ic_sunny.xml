@@ -1,6 +1,6 @@
 <vector xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android"
-        android:height="200dp" android:viewportHeight="1000"
-        android:viewportWidth="750" android:width="200dp">
+        android:height="1024dp" android:viewportHeight="1000"
+        android:viewportWidth="750" android:width="768dp">
     <path android:pathData="M0,0L750,0L750,1000L0,1000L0,0Z">
         <aapt:attr name="android:fillColor">
             <gradient android:endX="743.62" android:endY="9.15"

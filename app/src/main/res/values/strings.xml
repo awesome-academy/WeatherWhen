@@ -3,4 +3,11 @@
     <string name="error_no_internet_connection">No Internet connection detected</string>
     <string name="on_location_permission_denided">Location is needed to display weather forecasts</string>
     <string name="undo_string">Undo</string>
+    <string name="temperature_unit_celsius">C</string>
+    <string name="demo_temp">32</string>
+    <string name="demo_desc">Hanoi | day | smt</string>
+    <string name="demo_string">Dummy</string>
+    <string name="night">Night</string>
+    <string name="temperature_degree">O</string>
+    <string name="day">Day</string>
 </resources>

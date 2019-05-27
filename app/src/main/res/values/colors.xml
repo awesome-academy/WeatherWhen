@@ -3,4 +3,7 @@
     <color name="color_primary">#008577</color>
     <color name="color_primary_dark">#00574B</color>
     <color name="color_secondary">#D81B60</color>
+    <!-- Other colors -->
+    <color name="color_bg_night">#423077</color>
+    <color name="color_bg_day">#0078FF</color>
 </resources>
