@@ -13,10 +13,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import com.thailam.weatherwhen.R
 import com.thailam.weatherwhen.adapter.ForecastAdapter
-import com.thailam.weatherwhen.data.model.DailyForecast
-import com.thailam.weatherwhen.data.model.Response
-import com.thailam.weatherwhen.data.model.Status
+import com.thailam.weatherwhen.data.model.*
 import com.thailam.weatherwhen.ui.base.BaseActivity
+import com.thailam.weatherwhen.utils.DateFormatUtils
 import com.thailam.weatherwhen.utils.MyAnimationUtils
 import com.thailam.weatherwhen.utils.appendUnit
 import com.thailam.weatherwhen.viewmodel.ForecastViewModel
@@ -27,9 +26,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MainActivity : BaseActivity() {
 
     private val forecastViewModel: ForecastViewModel by viewModel()
-    private var isBgDay: Boolean = false
+    private var isCurrentNight: Boolean = false
     private var isAnimating = false
     private val forecastAdapter = ForecastAdapter()
+    private var currentForecasts: List<DailyForecast>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,15 +60,57 @@ class MainActivity : BaseActivity() {
 
     private fun updateUI(forecasts: List<DailyForecast>?) {
         if (forecasts != null) {
-            bindCurrentWeatherDay(forecasts[0])
-            forecastAdapter.submitList(forecasts)
+            currentForecasts = forecasts
+            bindCurrentWeather()
+            forecastAdapter.submitList(convertForecastsToDisplayFormat(currentForecasts))
         } else {
             onGetForecastsError(resources.getString(R.string.error_no_forecasts))
         }
     }
 
-    private fun bindCurrentWeatherDay(currentWeather: DailyForecast) {
-        // TODO: implement in next task
+    private fun convertForecastsToDisplayFormat(forecasts: List<DailyForecast>?): List<DisplayedForecast> {
+        val displayForecasts = mutableListOf<DisplayedForecast>()
+        forecasts?.forEach {
+            displayForecasts.add(
+                if (isCurrentNight) {
+                    DisplayedForecast(
+                        it.id, it.epochDate, it.temperature.minTemp.value,
+                        it.temperature.minTemp.unit, it.night
+                    )
+                } else {
+                    DisplayedForecast(
+                        it.id, it.epochDate, it.temperature.maxTemp.value,
+                        it.temperature.maxTemp.unit, it.day
+                    )
+
+                }
+            )
+        }
+        return displayForecasts
+    }
+
+    private fun bindCurrentWeather() {
+        if (currentForecasts != null) {
+            val displayedWeather = currentForecasts!![0]
+            val condition: CurrentCondition
+            textLocationDate.text = DateFormatUtils.longToDefaultDateTime(this, displayedWeather.epochDate.toLong())
+            if (!isCurrentNight) {
+                condition = displayedWeather.day
+                textViewTemp.text = displayedWeather.temperature.maxTemp.value.toInt().toString()
+                textLocationDate.append(resources.getString(R.string.header_append_day))
+            } else {
+                condition = displayedWeather.night
+                textViewTemp.text = displayedWeather.temperature.minTemp.value.toInt().toString()
+                textLocationDate.append(resources.getString(R.string.header_append_night))
+            }
+            textViewPhrase.text = condition.phrase
+            textViewRainPropValue.text =
+                StringBuilder().appendUnit(condition.rainProp.toString(), resources.getString(R.string.percent))
+            textViewWindSpeedValue.text = StringBuilder().appendUnit(
+                condition.wind.speed.value.toString(),
+                condition.wind.speed.unit
+            )
+        }
     }
 
     private fun onGetForecastsError(errorMsg: String?) =
@@ -76,6 +119,9 @@ class MainActivity : BaseActivity() {
     private fun initViews() {
         textViewDayNight.setOnClickListener {
             toggleDayNightForecast()
+        }
+        fabOpenSchedule.setOnClickListener {
+            // TODO: implement in next task
         }
     }
 
@@ -106,12 +152,12 @@ class MainActivity : BaseActivity() {
      *  Methods for animations handling
      */
     private fun toggleBgState() {
-        isBgDay = !isBgDay
+        isCurrentNight = !isCurrentNight
     }
 
     private fun toggleDayNightForecast() {
         if (isAnimating) return
-        if (!isBgDay) {
+        if (!isCurrentNight) {
             MyAnimationUtils.createCustomCircularRevealAnimation(
                 currentView = imageViewBgNight,
                 revealView = imageViewBgNight,
@@ -123,6 +169,8 @@ class MainActivity : BaseActivity() {
                     imageViewBgDay.visibility = View.INVISIBLE
                     toggleDayNightText(R.string.day, R.color.color_bg_day)
                     isAnimating = false
+                    updateUI(currentForecasts)
+                    bindCurrentWeather()
                 })
         } else {
             MyAnimationUtils.createCustomCircularRevealAnimation(
@@ -137,6 +185,8 @@ class MainActivity : BaseActivity() {
                     imageViewBgNight.visibility = View.INVISIBLE
                     toggleDayNightText(R.string.night, R.color.color_bg_night)
                     isAnimating = false
+                    updateUI(currentForecasts)
+                    bindCurrentWeather()
                 })
         }
         toggleBgState()

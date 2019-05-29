@@ -38,7 +38,6 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     open fun doOnFineLocationGranted() {
-        TODO("doOnFineLocation Granted Not implemented")
     }
 
     private fun onPermissionDenied() {

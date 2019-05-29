@@ -11,4 +11,7 @@
     <string name="temperature_degree">O</string>
     <string name="day">Day</string>
     <string name="error_no_forecasts">Error No Forecasts</string>
+    <string name="percent">%</string>
+    <string name="header_append_night">|  Night</string>
+    <string name="header_append_day">|  Day</string>
 </resources>

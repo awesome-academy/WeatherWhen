@@ -41,7 +41,6 @@ object MyAnimationUtils {
 fun Animator.setAnimationStartEnd(animationStart: () -> Unit, animationEnd: () -> Unit): Animator {
     this.addListener(object : Animator.AnimatorListener {
         override fun onAnimationRepeat(animation: Animator?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override fun onAnimationEnd(animation: Animator?) {
@@ -49,7 +48,6 @@ fun Animator.setAnimationStartEnd(animationStart: () -> Unit, animationEnd: () -
         }
 
         override fun onAnimationCancel(animation: Animator?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override fun onAnimationStart(animation: Animator?) {
