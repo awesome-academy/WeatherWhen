@@ -35,54 +35,49 @@
 
     <!-- include later -->
     <TextView
-        android:id="@+id/textTemp"
+        android:id="@+id/textViewTemp"
         style="@style/TextViewTemperature"
+        android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/demo_temp"
         android:textSize="@dimen/sp_120"
         app:layout_constraintEnd_toStartOf="@+id/textViewTempDegree"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLocationDate" />
 
     <TextView
         android:id="@+id/textViewTempDegree"
         style="@style/TextViewTemperature"
-        android:layout_marginStart="@dimen/dp_4"
-        android:layout_marginEnd="@dimen/dp_4"
+        android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/temperature_degree"
         android:textSize="@dimen/sp_20"
-        app:layout_constraintBottom_toBottomOf="@+id/textTemp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTemp"
         app:layout_constraintEnd_toStartOf="@+id/textViewUnitCelsius"
-        app:layout_constraintStart_toEndOf="@+id/textTemp"
-        app:layout_constraintTop_toTopOf="@+id/textTemp"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintTop_toTopOf="@+id/textViewTemp"
+        app:layout_constraintVertical_bias="0.13" />
 
     <TextView
         android:id="@+id/textViewUnitCelsius"
         style="@style/TextViewTemperature"
+        android:layout_marginEnd="@dimen/dp_8"
         android:text="@string/temperature_unit_celsius"
         android:textSize="@dimen/sp_120"
-        app:layout_constraintBottom_toBottomOf="@+id/textTemp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textViewTempDegree"
-        app:layout_constraintTop_toTopOf="@+id/textTemp" />
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTemp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/textViewTemp" />
 
     <TextView
         android:id="@+id/textLocationDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
         android:fontFamily="serif-monospace"
         android:text="@string/demo_desc"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/sp_16"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintVertical_bias="0.08" />
 
     <TextView
         android:id="@+id/textViewRainPropValue"
@@ -90,8 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
         android:text="@string/demo_string"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewRainProp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewRainProp"
         app:layout_constraintTop_toTopOf="@+id/imageViewRainProp" />
 
@@ -99,13 +94,13 @@
         android:id="@+id/imageViewRainProp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginStart="@dimen/dp_8"
         android:contentDescription="@string/app_name"
-        app:layout_constraintEnd_toStartOf="@+id/textViewRainPropValue"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPhrase"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewWindSpeed"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/textLocationDate"
+        app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/ic_umbrella" />
 
     <ImageView
@@ -114,7 +109,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
         android:contentDescription="@string/app_name"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/textViewPhrase"
         app:layout_constraintEnd_toEndOf="@+id/imageViewRainProp"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/imageViewRainProp"
         app:layout_constraintTop_toBottomOf="@+id/imageViewRainProp"
         app:srcCompat="@drawable/ic_wind" />
@@ -125,12 +123,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
         android:text="@string/demo_string"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewWindSpeed"
         app:layout_constraintStart_toEndOf="@+id/imageViewWindSpeed"
         app:layout_constraintTop_toTopOf="@+id/imageViewWindSpeed" />
 
     <!-- end include later -->
-
     <TextView
         android:id="@+id/textViewDayNight"
         android:layout_width="@dimen/dp_60"
@@ -149,14 +147,48 @@
 
     <TextView
         android:id="@+id/textViewPhrase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_8"
-        android:layout_marginEnd="@dimen/dp_8"
+        style="@style/TextViewTemperature"
+        android:fontFamily="serif-monospace"
         android:text="@string/demo_string"
-        android:textSize="@dimen/sp_18"
+        android:textSize="@dimen/sp_16"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTemp" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTemp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_forecast"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_40"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBgNight"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewBgNight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginStart="@dimen/dp_32"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_32"
+        android:alpha="0.5"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_forecast"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/recycler_forecast"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPhrase" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

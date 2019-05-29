@@ -4,7 +4,7 @@ import com.thailam.weatherwhen.data.ForecastDataSource
 import com.thailam.weatherwhen.data.model.DailyForecast
 import com.thailam.weatherwhen.data.model.LocationResponse
 import com.thailam.weatherwhen.data.model.WeatherResponse
-import com.thailam.weatherwhen.utils.CURRENT_DATE_Y_M_D
+import com.thailam.weatherwhen.utils.DateFormatUtils
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +24,9 @@ class ForecastRepositoryImpl(
         return if (shouldRefresh) {
             getLocationKey(geoposition.toLocationQueryFormat())
                 .subscribeOn(Schedulers.io())
+                .doOnSuccess {
+                    deleteAllForecasts()
+                }
                 .flatMap {
                     getDailyForecastsRemote(it.key)
                 }
@@ -50,10 +53,14 @@ class ForecastRepositoryImpl(
     override fun getLastUpdatedForecast(): DailyForecast =
         forecastLocalDataSource.getLastUpdatedForecast()
 
+    override fun deleteAllForecasts() =
+        forecastLocalDataSource.deleteAllForecasts()
+
     private suspend fun checkIfShouldRefresh(): Boolean = coroutineScope {
         withContext(Dispatchers.IO) {
             val lastForecast: DailyForecast? = withContext(Dispatchers.IO) { getLastUpdatedForecast() }
-            lastForecast?.date.equals(CURRENT_DATE_Y_M_D, ignoreCase = true)
+            val lastForecastDate = lastForecast?.date?.substring(0, 10)
+            !lastForecastDate.equals(DateFormatUtils.getCurrentDate(), ignoreCase = true)
         }
     }
 

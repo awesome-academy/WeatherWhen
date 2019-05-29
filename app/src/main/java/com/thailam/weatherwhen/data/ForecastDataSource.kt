@@ -10,6 +10,7 @@ interface ForecastDataSource {
         fun addDailyForecasts(dailyForecasts: List<DailyForecast>)
         fun getDailyForecastsLocal(): Single<List<DailyForecast>>
         fun getLastUpdatedForecast(): DailyForecast
+        fun deleteAllForecasts()
     }
 
     interface Remote {

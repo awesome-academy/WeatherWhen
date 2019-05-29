@@ -18,4 +18,7 @@ abstract class DailyForecastDao {
 
     @Query(value = "SELECT * FROM $TBL_FORECAST_NAME LIMIT 1")
     abstract fun getLastUpdatedForecast(): DailyForecast
+
+    @Query(value = "DELETE FROM $TBL_FORECAST_NAME")
+    abstract fun deleteAllForecasts()
 }

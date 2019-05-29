@@ -16,4 +16,7 @@ class ForecastLocalDataSource(
 
     override fun addDailyForecasts(dailyForecasts: List<DailyForecast>) =
         forecastDao.addDailyForecasts(dailyForecasts)
+
+    override fun deleteAllForecasts() =
+        forecastDao.deleteAllForecasts()
 }
