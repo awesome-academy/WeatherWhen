@@ -31,7 +31,6 @@ class MainActivity : BaseActivity() {
     private val forecastAdapter = ForecastAdapter()
     private var currentForecasts: List<DailyForecast>? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,10 +38,24 @@ class MainActivity : BaseActivity() {
         checkPermissions()
         initViews()
         initRecyclerView()
+        loadBackgroundStateFromSavedInstance(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(BUNDLE_IS_NIGHT, isCurrentNight)
+        super.onSaveInstanceState(outState)
     }
 
     override fun doOnFineLocationGranted() {
         getLastLocation()
+    }
+
+    private fun loadBackgroundStateFromSavedInstance(savedInstanceState: Bundle?) {
+        val isCurrentNightLastState = savedInstanceState?.getBoolean(BUNDLE_IS_NIGHT)
+        if (isCurrentNightLastState != null) {
+            isCurrentNight = isCurrentNightLastState
+            if (isCurrentNight) imageViewBgNight.visibility = View.VISIBLE
+        }
     }
 
     private fun initViewModel() {
@@ -54,11 +67,13 @@ class MainActivity : BaseActivity() {
     private fun handleForecastsChange(response: Response<List<DailyForecast>>) {
         when (response.status) {
             Status.SUCCESS -> updateUI(response.data)
+            Status.LOADING -> showProgressBar()
             Status.ERROR -> onGetForecastsError(response.message)
         }
     }
 
     private fun updateUI(forecasts: List<DailyForecast>?) {
+        hideProgressBar()
         if (forecasts != null) {
             currentForecasts = forecasts
             bindCurrentWeather()
@@ -93,7 +108,7 @@ class MainActivity : BaseActivity() {
         if (currentForecasts != null) {
             val displayedWeather = currentForecasts!![0]
             val condition: CurrentCondition
-            textLocationDate.text = DateFormatUtils.longToDefaultDateTime(this, displayedWeather.epochDate.toLong())
+            textLocationDate.text = DateFormatUtils.longToDefaultDateTime(this, displayedWeather.epochDate)
             if (!isCurrentNight) {
                 condition = displayedWeather.day
                 textViewTemp.text = displayedWeather.temperature.maxTemp.value.toInt().toString()
@@ -113,8 +128,18 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun onGetForecastsError(errorMsg: String?) =
+    private fun onGetForecastsError(errorMsg: String?) {
+        hideProgressBar()
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showProgressBar() {
+        progressBarForecastScreen.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBarForecastScreen.visibility = View.GONE
+    }
 
     private fun initViews() {
         textViewDayNight.setOnClickListener {
@@ -207,5 +232,9 @@ class MainActivity : BaseActivity() {
             setHasFixedSize(true)
             adapter = forecastAdapter
         }
+    }
+
+    companion object {
+        const val BUNDLE_IS_NIGHT = "BUNDLE_IS_NIGHT"
     }
 }
