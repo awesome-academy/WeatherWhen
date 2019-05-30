@@ -14,4 +14,7 @@
     <string name="percent">%</string>
     <string name="header_append_night">|  Night</string>
     <string name="header_append_day">|  Day</string>
+    <string name="title_activity_schedule">ScheduleActivity</string>
+    <string name="demo_time">08:30 AM</string>
+    <string name="demo_date">Monday August 12,2019</string>
 </resources>

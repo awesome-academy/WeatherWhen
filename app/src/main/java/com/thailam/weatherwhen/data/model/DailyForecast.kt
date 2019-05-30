@@ -15,7 +15,7 @@ data class DailyForecast(
     @SerializedName(API_DATE) @ColumnInfo(name = TBL_FORECAST_DATE)
     val date: String,
     @SerializedName(API_EPOCH_DATE) @ColumnInfo(name = TBL_FORECAST_EPOCH)
-    val epochDate: Int,
+    val epochDate: Long,
     @Embedded(prefix = TBL_FORECAST_TEMPERATURE)
     @SerializedName(API_TEMPERATURE)
     val temperature: Temperature,

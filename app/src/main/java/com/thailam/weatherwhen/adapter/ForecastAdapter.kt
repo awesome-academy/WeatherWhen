@@ -31,7 +31,7 @@ class ForecastAdapter : ListAdapter<DisplayedForecast, ForecastAdapter.ViewHolde
         fun bind(forecast: DisplayedForecast) {
             with(itemView) {
                 textViewForecastsDay.text =
-                    DateFormatUtils.longToDayOfWeek(context, forecast.epochDate.toLong(), true)
+                    DateFormatUtils.longToDayOfWeek(context, forecast.epochDate, true)
                 textViewForecastsTemp.text = StringBuilder().appendUnit(
                     forecast.temperatureValue.toString(),
                     forecast.temperatureUnit

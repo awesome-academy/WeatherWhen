@@ -14,4 +14,6 @@
     <dimen name="dp_40">40dp</dimen>
     <dimen name="dp_50">50dp</dimen>
     <dimen name="dp_60">60dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="dp_180">180dp</dimen>
 </resources>

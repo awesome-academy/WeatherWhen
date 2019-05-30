@@ -1,6 +1,7 @@
-package com.thailam.weatherwhen.ui
+package com.thailam.weatherwhen.ui.forecast
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,7 @@ import com.thailam.weatherwhen.R
 import com.thailam.weatherwhen.adapter.ForecastAdapter
 import com.thailam.weatherwhen.data.model.*
 import com.thailam.weatherwhen.ui.base.BaseActivity
+import com.thailam.weatherwhen.ui.schedule.ScheduleActivity
 import com.thailam.weatherwhen.utils.DateFormatUtils
 import com.thailam.weatherwhen.utils.MyAnimationUtils
 import com.thailam.weatherwhen.utils.appendUnit
@@ -23,14 +25,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainActivity : BaseActivity() {
+class ForecastActivity : BaseActivity() {
 
     private val forecastViewModel: ForecastViewModel by viewModel()
     private var isCurrentNight: Boolean = false
     private var isAnimating = false
     private val forecastAdapter = ForecastAdapter()
     private var currentForecasts: List<DailyForecast>? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +40,25 @@ class MainActivity : BaseActivity() {
         checkPermissions()
         initViews()
         initRecyclerView()
+        loadBackgroundStateFromSavedInstance(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(BUNDLE_IS_NIGHT, isCurrentNight)
+        super.onSaveInstanceState(outState)
     }
 
     override fun doOnFineLocationGranted() {
         getLastLocation()
+    }
+
+    private fun loadBackgroundStateFromSavedInstance(savedInstanceState: Bundle?) {
+        val isCurrentNightLastState = savedInstanceState?.getBoolean(BUNDLE_IS_NIGHT)
+        if (isCurrentNightLastState != null) {
+            isCurrentNight = isCurrentNightLastState
+            if (isCurrentNight) imageViewBgNight.visibility = View.VISIBLE
+        }
     }
 
     private fun initViewModel() {
@@ -54,11 +70,13 @@ class MainActivity : BaseActivity() {
     private fun handleForecastsChange(response: Response<List<DailyForecast>>) {
         when (response.status) {
             Status.SUCCESS -> updateUI(response.data)
+            Status.LOADING -> showProgressBar()
             Status.ERROR -> onGetForecastsError(response.message)
         }
     }
 
     private fun updateUI(forecasts: List<DailyForecast>?) {
+        hideProgressBar()
         if (forecasts != null) {
             currentForecasts = forecasts
             bindCurrentWeather()
@@ -93,7 +111,7 @@ class MainActivity : BaseActivity() {
         if (currentForecasts != null) {
             val displayedWeather = currentForecasts!![0]
             val condition: CurrentCondition
-            textLocationDate.text = DateFormatUtils.longToDefaultDateTime(this, displayedWeather.epochDate.toLong())
+            textLocationDate.text = DateFormatUtils.longToDefaultDateTime(this, displayedWeather.epochDate)
             if (!isCurrentNight) {
                 condition = displayedWeather.day
                 textViewTemp.text = displayedWeather.temperature.maxTemp.value.toInt().toString()
@@ -113,15 +131,25 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun onGetForecastsError(errorMsg: String?) =
+    private fun onGetForecastsError(errorMsg: String?) {
+        hideProgressBar()
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showProgressBar() {
+        progressBarForecastScreen.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBarForecastScreen.visibility = View.GONE
+    }
 
     private fun initViews() {
         textViewDayNight.setOnClickListener {
             toggleDayNightForecast()
         }
         fabOpenSchedule.setOnClickListener {
-            // TODO: implement in next task
+            startActivity(Intent(this, ScheduleActivity::class.java))
         }
     }
 
@@ -197,15 +225,19 @@ class MainActivity : BaseActivity() {
             text = resources.getString(titleId)
             DrawableCompat.setTint(
                 this.background,
-                ContextCompat.getColor(this@MainActivity, colorId)
+                ContextCompat.getColor(this@ForecastActivity, colorId)
             )
         }
 
     private fun initRecyclerView() {
         recycler_forecast.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = LinearLayoutManager(this@ForecastActivity)
             setHasFixedSize(true)
             adapter = forecastAdapter
         }
+    }
+
+    companion object {
+        const val BUNDLE_IS_NIGHT = "BUNDLE_IS_NIGHT"
     }
 }
