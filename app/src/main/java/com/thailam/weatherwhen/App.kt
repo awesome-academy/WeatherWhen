@@ -2,6 +2,7 @@ package com.thailam.weatherwhen
 
 import android.app.Application
 import com.thailam.weatherwhen.di.forecastModule
+import com.thailam.weatherwhen.di.scheduleModule
 import com.thailam.weatherwhen.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -13,7 +14,7 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(listOf(forecastModule, viewModelModule))
+            modules(listOf(forecastModule, scheduleModule, viewModelModule))
         }
     }
 }

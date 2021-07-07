@@ -24,7 +24,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity() {
-
     private val forecastViewModel: ForecastViewModel by viewModel()
     private var isCurrentNight: Boolean = false
     private var isAnimating = false
